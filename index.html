@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#9b7ede">
+  <title>PyMotion | Laboratorium Fisika Interaktif</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.166.1/examples/jsm/"
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#beranda">
+        <span class="brand-mark">P</span>
+        <span><strong>PyMotion</strong><small>PHYSICS LAB</small></span>
+      </a>
+      <div class="side-label">MENU UTAMA</div>
+      <nav class="nav">
+        <a class="nav-link active" href="#beranda"><span>⌂</span> Beranda</a>
+        <a class="nav-link" href="#simulasi"><span>◉</span> Laboratorium 3D</a>
+        <a class="nav-link" href="#grafik"><span>⌁</span> Grafik Gerak</a>
+        <a class="nav-link" href="#materi"><span>▤</span> Materi Fisika</a>
+        <a class="nav-link" href="#latihan"><span>✓</span> Latihan Soal</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-card">
+          <span class="mini-icon">✦</span>
+          <strong>Belajar sambil bereksperimen</strong>
+          <p>Ubah parameter, amati gerak, dan pahami konsep fisika.</p>
+        </div>
+        <small class="muted">PyMotion • Versi Web</small>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">☰</button>
+        <div class="breadcrumb">Ruang belajar <span>/</span> <strong>Laboratorium Fisika</strong></div>
+        <div class="topbar-right"><span class="status-dot"></span> Siap belajar</div>
+      </header>
+
+      <section class="hero" id="beranda">
+        <div class="hero-copy">
+          <div class="eyebrow"><span>✦</span> VIRTUAL PHYSICS LABORATORY</div>
+          <h1>Jelajahi gerak.<br><span>Pahami fisika.</span></h1>
+          <p>Laboratorium interaktif untuk mempelajari Gerak Lurus Beraturan, Gerak Lurus Berubah Beraturan, dan gerak parabola melalui simulasi visual.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#simulasi">Mulai simulasi <span>→</span></a>
+            <a class="btn btn-quiet" href="#materi">Pelajari materi</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Ilustrasi lintasan gerak">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="planet planet-pink"></div><div class="planet planet-purple"></div>
+          <div class="floating-card card-a"><span>v</span><div><b>Kecepatan</b><small>m/s</small></div></div>
+          <div class="floating-card card-b"><span>↗</span><div><b>Lintasan</b><small>Gerak 3D</small></div></div>
+          <div class="hero-symbol">x = v₀t</div>
+        </div>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card"><div class="stat-icon lavender">↗</div><div><span>Konsep gerak</span><strong>3 simulasi</strong><small>GLB · GLBB · Parabola</small></div></article>
+        <article class="stat-card"><div class="stat-icon pink">⌁</div><div><span>Visualisasi</span><strong>3D + Grafik</strong><small>Amati perubahan gerak</small></div></article>
+        <article class="stat-card"><div class="stat-icon mint">✎</div><div><span>Pembelajaran</span><strong>Materi & kuis</strong><small>Latihan pemahaman konsep</small></div></article>
+      </section>
+
+      <section class="section-block" id="simulasi">
+        <div class="section-heading">
+          <div><div class="eyebrow">INTERACTIVE LAB</div><h2>Laboratorium 3D</h2><p>Atur parameter dan amati gerak benda secara langsung.</p></div>
+          <span class="section-pill">● Simulasi aktif di browser</span>
+        </div>
+        <div class="lab-layout">
+          <div class="simulation-card">
+            <div class="simulation-top">
+              <div><span class="live-dot"></span><strong id="sceneTitle">Simulasi GLB</strong></div>
+              <div class="scene-actions"><button id="resetCamera" class="icon-button" title="Atur ulang kamera">⟳</button><span class="keyboard-hint">Seret untuk memutar · scroll untuk zoom</span></div>
+            </div>
+            <div id="scene" class="scene">
+              <div class="scene-loading" id="sceneLoading">Menyiapkan laboratorium 3D…</div>
+              <div class="scene-overlay"><span id="sceneMode">GERAK LURUS BERATURAN</span><small>MODEL VISUAL 3D</small></div>
+            </div>
+            <div class="scene-footer"><span><i class="legend-dot pink-dot"></i> Posisi benda</span><span><i class="legend-dot green-dot"></i> Titik akhir</span><span id="sceneState">Siap dijalankan</span></div>
+          </div>
+          <aside class="control-card">
+            <div class="control-heading"><div><span class="eyebrow">PENGATURAN</span><h3>Parameter gerak</h3></div><span class="gear">⚙</span></div>
+            <label class="field-label" for="motionType">Jenis simulasi</label>
+            <select id="motionType" class="field">
+              <option value="glb">GLB — Kecepatan konstan</option>
+              <option value="glbb">GLBB — Percepatan konstan</option>
+              <option value="parabola">Gerak parabola</option>
+            </select>
+            <div class="input-grid">
+              <div class="field-wrap"><label class="field-label" for="v0">Kecepatan awal (m/s)</label><input class="field" id="v0" type="number" min="0" max="30" step="0.5" value="5"></div>
+              <div class="field-wrap" id="accelWrap"><label class="field-label" for="accel">Percepatan (m/s²)</label><input class="field" id="accel" type="number" min="-5" max="5" step="0.5" value="1"></div>
+              <div class="field-wrap" id="angleWrap" hidden><label class="field-label" for="angle">Sudut elevasi (°)</label><input class="field" id="angle" type="number" min="1" max="89" step="1" value="45"></div>
+              <div class="field-wrap"><label class="field-label" for="duration">Waktu (s)</label><input class="field" id="duration" type="number" min="1" max="20" step="1" value="10"></div>
+            </div>
+            <div class="formula-panel"><span>MODEL MATEMATIS</span><strong id="formula">x = v₀t</strong><small id="formulaNote">Kecepatan tetap, percepatan nol.</small></div>
+            <div class="control-buttons">
+              <button class="btn btn-primary full" id="startBtn">▶ Mulai simulasi</button>
+              <div class="button-row"><button class="btn btn-soft" id="pauseBtn">Ⅱ Jeda</button><button class="btn btn-quiet bordered" id="resetBtn">↻ Reset</button></div>
+            </div>
+            <p class="hint">Catatan: skala objek 3D disesuaikan agar lintasan terlihat jelas. Nilai fisika dihitung dalam satuan SI.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section-block" id="grafik">
+        <div class="section-heading"><div><div class="eyebrow">DATA & ANALISIS</div><h2>Grafik gerak</h2><p>Grafik diperbarui berdasarkan parameter simulasi yang dipilih.</p></div></div>
+        <div class="metrics-grid">
+          <article class="metric-card"><span>Waktu simulasi</span><strong id="metricTime">0.00 <small>s</small></strong><div class="metric-line"><span id="timeProgress"></span></div></article>
+          <article class="metric-card"><span>Posisi akhir / jangkauan</span><strong id="metricPosition">0.00 <small>m</small></strong><small class="metric-caption">Berdasarkan model gerak</small></article>
+          <article class="metric-card"><span>Kecepatan akhir</span><strong id="metricVelocity">5.00 <small>m/s</small></strong><small class="metric-caption">Komponen horizontal untuk parabola</small></article>
+          <article class="metric-card"><span>Percepatan</span><strong id="metricAcceleration">0.00 <small>m/s²</small></strong><small class="metric-caption">Sesuai jenis simulasi</small></article>
+        </div>
+        <div class="chart-grid">
+          <article class="chart-card"><div class="chart-title"><div><h3>Posisi terhadap waktu</h3><p>Perubahan posisi benda selama simulasi</p></div><span class="chart-badge">x – t</span></div><div class="chart-wrap"><canvas id="positionChart"></canvas></div></article>
+          <article class="chart-card"><div class="chart-title"><div><h3>Kecepatan terhadap waktu</h3><p>Perubahan kecepatan benda selama simulasi</p></div><span class="chart-badge green-badge">v – t</span></div><div class="chart-wrap"><canvas id="velocityChart"></canvas></div></article>
+        </div>
+      </section>
+
+      <section class="section-block" id="materi">
+        <div class="section-heading"><div><div class="eyebrow">RINGKASAN KONSEP</div><h2>Materi fisika</h2><p>Pelajari persamaan dasar sebelum mencoba simulasi.</p></div></div>
+        <div class="lesson-grid">
+          <article class="lesson-card"><div class="lesson-icon lavender">→</div><span class="lesson-tag">KINEMATIKA</span><h3>Gerak Lurus Beraturan</h3><p>Benda bergerak pada lintasan lurus dengan kecepatan konstan. Percepatan benda bernilai nol.</p><div class="equation">x = x₀ + vt</div><button class="text-button lesson-more" data-lesson="glb">Baca ringkasan <span>→</span></button></article>
+          <article class="lesson-card"><div class="lesson-icon pink">↗</div><span class="lesson-tag">KINEMATIKA</span><h3>Gerak Lurus Berubah Beraturan</h3><p>Kecepatan berubah secara teratur karena percepatan konstan.</p><div class="equation">x = x₀ + v₀t + ½at²</div><button class="text-button lesson-more" data-lesson="glbb">Baca ringkasan <span>→</span></button></article>
+          <article class="lesson-card"><div class="lesson-icon mint">⌁</div><span class="lesson-tag">GERAK 2 DIMENSI</span><h3>Gerak Parabola</h3><p>Gerak dua dimensi yang dapat dianalisis sebagai komponen horizontal dan vertikal.</p><div class="equation">x = v₀ cos θ · t</div><button class="text-button lesson-more" data-lesson="parabola">Baca ringkasan <span>→</span></button></article>
+        </div>
+        <div class="lesson-detail" id="lessonDetail" hidden></div>
+      </section>
+
+      <section class="section-block" id="latihan">
+        <div class="section-heading"><div><div class="eyebrow">UJI PEMAHAMAN</div><h2>Latihan soal singkat</h2><p>Pilih jawaban yang benar. Hasil akan ditampilkan setelah diperiksa.</p></div></div>
+        <div class="quiz-card">
+          <div class="quiz-progress"><span>SOAL KONSEP DASAR</span><span id="quizCount">1 dari 3</span></div>
+          <div class="progress-track"><span id="quizProgress"></span></div>
+          <h3 id="questionText">Pada GLB, besaran apakah yang bernilai konstan?</h3>
+          <div class="answer-list" id="answerList"></div>
+          <div class="quiz-bottom"><span id="quizFeedback" aria-live="polite">Pilih satu jawaban.</span><button class="btn btn-primary" id="checkAnswer">Periksa jawaban</button></div>
+        </div>
+      </section>
+
+      <footer class="footer"><a class="brand footer-brand" href="#beranda"><span class="brand-mark">P</span><span><strong>PyMotion</strong><small>PHYSICS LAB</small></span></a><p>Visualisasi & Laboratorium Interaktif GLB dan GLBB Berbasis Python</p><span>Belajar fisika melalui eksplorasi.</span></footer>
+    </main>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
